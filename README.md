@@ -12,4 +12,5 @@ As of Dec. 21, 2024, I consider this project incomplete. I wrote this script in 
 
 ---
 _This readme is a work and progress, detailed instructions will follow._
-**_I am also not responsible for an unintented conseqences that may occur as a result of using this script. By using this script, you accept that you are responsible for reviewing this script, understanding its behaviour, and accepting all ensuing consequences. _**
+---
+**I am not responsible for any unintended consequences that may arise from using this script. By using this script, you acknowledge that you are solely responsible for reviewing it, understanding its behavior, and accepting all resulting outcomes.**
