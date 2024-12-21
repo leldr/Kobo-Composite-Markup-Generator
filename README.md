@@ -6,6 +6,7 @@ I currently have a working python script that relies on the `pillow` and `cairos
 This script works based on two assumptions:
 1. that it is located in the `.kobo/markups` directory,
 2. and that each 'markup' consists of a `jpg` file of the page that was written on and an indentically named `svg` file.
+3. a python virtual environement is being used, with `cairosvg` and `pillow` python libraries already installed.
 
 ---
 _This readme is a work and progress, detailed instructions will follow._
