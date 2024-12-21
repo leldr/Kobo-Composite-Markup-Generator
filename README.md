@@ -8,5 +8,7 @@ This script works based on two assumptions:
 2. and that each 'markup' consists of a `jpg` file of the page that was written on and an indentically named `svg` file.
 3. a python virtual environement is being used, with `cairosvg` and `pillow` python libraries already installed.
 
+As of Dec. 21, 2024, I consider this project incomplete. I wrote this script in 2ish hours and would like to have a standalone executeable with a simple GUI that will be accessible to non-technical people. I use Calibre as well, so if I could figure out how to make this a plugin that would be even better.
+
 ---
 _This readme is a work and progress, detailed instructions will follow._
