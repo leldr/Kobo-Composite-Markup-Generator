@@ -11,6 +11,9 @@ This script works based on two assumptions:
 As of Dec. 21, 2024, I consider this project incomplete. I wrote this script in 2ish hours and would like to have a standalone executeable with a simple GUI that will be accessible to non-technical people. I use Calibre as well, so if I could figure out how to make this a plugin that would be even better.
 
 ---
+
 _This readme is a work and progress, detailed instructions will follow._
+
 ---
+
 **I am not responsible for any unintended consequences that may arise from using this script. By using this script, you acknowledge that you are solely responsible for reviewing it, understanding its behavior, and accepting all resulting outcomes.**
