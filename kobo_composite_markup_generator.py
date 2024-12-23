@@ -6,6 +6,95 @@ import collections
 import cairosvg
 from PIL import Image
 import sqlite3
+from svgpathtools import svg2paths
+from cairosvg import svg2png
+import io
+
+
+def compute_path_bbox(svg_path):
+    """
+    Compute the bounding box of all <path> elements in the SVG using svgpathtools.
+    Returns (xmin, ymin, xmax, ymax).
+    Raises ValueError if no valid path geometry is found.
+    """
+    paths, _ = svg2paths(svg_path)
+    if not paths:
+        raise ValueError("No <path> elements found or no valid geometry in the SVG.")
+
+    # Initialize bounding box to extremes
+    min_x = float("inf")
+    max_x = float("-inf")
+    min_y = float("inf")
+    max_y = float("-inf")
+
+    # Accumulate bounding box for each path
+    for path in paths:
+        # bbox() returns (xmin, xmax, ymin, ymax)
+        xmin, xmax, ymin, ymax = path.bbox()
+        min_x = min(min_x, xmin)
+        max_x = max(max_x, xmax)
+        min_y = min(min_y, ymin)
+        max_y = max(max_y, ymax)
+
+    if min_x == float("inf") or min_y == float("inf"):
+        raise ValueError("Unable to compute bounding box from <path> data.")
+    padding = 50
+    min_x -= padding
+    max_x += padding
+    min_y -= padding
+    max_y += padding
+    return (min_x, min_y, max_x, max_y)
+
+
+def crop_jpeg(jpeg_path, cropped_jpeg_path, bbox):
+    """
+    Crop the JPEG image at `jpeg_path` to `bbox` (xmin, ymin, xmax, ymax),
+    then save it to `cropped_jpeg_path`.
+    """
+    img = Image.open(jpeg_path)
+    left, upper, right, lower = bbox
+    cropped_img = img.crop((left, upper, right, lower))
+    cropped_img.save(cropped_jpeg_path, format="JPEG")
+    print(f"[INFO] Cropped JPEG saved to {cropped_jpeg_path}")
+
+
+def rasterize_and_crop_svg(svg_path, bbox):
+    """
+    Convert the entire SVG to a PNG in memory using cairosvg, then crop it
+    to the same bounding box. Returns the cropped PNG as a PIL Image object.
+    """
+    # Read SVG into memory
+    with open(svg_path, "rb") as f:
+        svg_data = f.read()
+
+    # Convert SVG to PNG (in-memory) with cairosvg
+    png_data = svg2png(bytestring=svg_data)
+
+    # Open as a Pillow Image
+    full_svg_png = Image.open(io.BytesIO(png_data))
+
+    # Crop the rasterized SVG
+    left, upper, right, lower = bbox
+    cropped_svg_png = full_svg_png.crop((left, upper, right, lower))
+
+    return cropped_svg_png
+
+
+def overlay_cropped_svg_on_jpeg(cropped_jpeg_path, cropped_svg_img, output_path):
+    """
+    Overlays the PIL Image `cropped_svg_img` (already cropped to bounding box)
+    on top of the cropped JPEG at `cropped_jpeg_path`, then saves to `output_path`.
+    """
+    base_img = Image.open(cropped_jpeg_path).convert("RGBA")
+    overlay_img = cropped_svg_img.convert("RGBA")
+
+    # Paste overlay onto base (with alpha)
+    base_img.paste(overlay_img, (0, 0), overlay_img)
+
+    # Optionally convert back to RGB if you want a JPEG output (no alpha)
+    final = base_img.convert("RGB")
+    final.save(output_path, format="JPEG")
+    print(f"[INFO] Final overlay image saved to {output_path}")
 
 def get_volume_id_for_bookmark(bookmark_id):
     """
@@ -153,9 +242,21 @@ def main():
 
             # Final path => "composite markups/<book_title>/<basename>_composite.png"
             output_path = os.path.join(book_dir, output_name)
-
+            cropped_temp = os.path.join(book_dir, "cropped_temp")
             # Overlay the images
-            overlay_svg_on_jpg(jpg_path, svg_path, output_path)
+            #overlay_svg_on_jpg(jpg_path, svg_path, output_path)
+             # 1) Compute bounding box based on <path> in the SVG
+            (xmin, ymin, xmax, ymax) = compute_path_bbox(svg_path)
+            print(f"[INFO] BBox from SVG paths: (xmin={xmin}, ymin={ymin}, xmax={xmax}, ymax={ymax})")
+
+    # 2) Crop the JPEG using that bounding box
+            crop_jpeg(jpg_path, cropped_temp, (xmin, ymin, xmax, ymax))
+
+    # 3) Rasterize the SVG to PNG, then crop that PNG
+            cropped_svg_image = rasterize_and_crop_svg(svg_path, (xmin, ymin, xmax, ymax))
+
+    # 4) Overlay the cropped SVG onto the newly cropped JPEG
+            overlay_cropped_svg_on_jpeg(cropped_temp, cropped_svg_image, output_path)
 
     print("All matching .jpg + .svg pairs have been processed.")
 
