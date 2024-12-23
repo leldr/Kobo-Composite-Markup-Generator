@@ -6,6 +6,7 @@ import collections
 import cairosvg
 from PIL import Image
 import sqlite3
+import re
 
 def get_volume_id_for_bookmark(bookmark_id):
     """
@@ -57,6 +58,94 @@ def get_section_title_for_bookmark(bookmark_id):
     if row:
         return row[0]
     return None
+
+def get_book_part_number_for_bookmark(bookmark_id):
+    """
+    Retrieves the Title for a given BookmarkID from the Bookmark and Content tables.
+    
+    :param bookmark_id: The BookmarkID (string) to look up in the database.
+    :return: The Title (string) if found, otherwise None.
+    """
+    conn = sqlite3.connect("../KoboReader.sqlite")
+    cursor = conn.cursor()
+
+    query = """
+        SELECT adobe_location
+        FROM content 
+        WHERE ContentID = (
+            SELECT ContentID 
+            FROM Bookmark 
+            WHERE BookmarkID = ?
+        )
+    """
+    cursor.execute(query, (bookmark_id,))
+    row = cursor.fetchone()
+    
+    unclean_part_name = str(row[0]).split("/")
+    part_name_with_html = unclean_part_name[-1].split(".")
+
+    cursor.close()
+    conn.close()
+    
+    if row:
+        return part_name_with_html[0]
+    return None
+
+import sqlite3
+import re
+
+def get_ordering_number_for_bookmark(bookmark_id):
+    """
+    Retrieves the ePub CFI (Canonical Fragment ID) for a given BookmarkID from the Bookmark table
+    and cleans it for file-naming purposes.
+    
+    :param bookmark_id: The BookmarkID (string) to look up in the database.
+    :return: The ordering number as a string if found, otherwise None.
+    """
+    # Connect to the KoboReader SQLite database
+    conn = sqlite3.connect("../KoboReader.sqlite")
+    cursor = conn.cursor()
+
+    # SQL query to retrieve the StartContainerPath for the given BookmarkID
+    query = """
+        SELECT StartContainerPath 
+        FROM Bookmark 
+        WHERE BookmarkID = ?
+    """
+    # Execute the query with the provided bookmark_id
+    cursor.execute(query, (bookmark_id,))
+    # Fetch the first row from the result set
+    row = cursor.fetchone()
+    
+    # If a row is found, proceed to extract the point location
+    if row:
+        # Define a regex pattern to extract the point location from the StartContainerPath
+        pattern = re.compile(r'point\((/[\d/]+:\d+)\)')
+        # Search for the pattern in the retrieved StartContainerPath
+        match = pattern.search(row[0])
+        
+        # If a match is found, process the extracted point location
+        if match:
+            # Extract the matched group (the point location)
+            extracted_point_location = match.group(1)
+            # Replace ':' with '.' and '/' with '.' to clean the point location
+            cleaned_point_location = extracted_point_location.replace(":", ".").replace("/", ".")
+            
+            # Close the cursor and the database connection
+            cursor.close()
+            conn.close()
+            
+            # Return the cleaned point location
+            return cleaned_point_location
+    
+    # If no row is found or no match is found, close the cursor and connection
+    cursor.close()
+    conn.close()
+    
+    # Return None if the BookmarkID is not found or the point location is not extracted
+    return None
+
+
 
 
 def overlay_svg_on_jpg(
@@ -179,8 +268,11 @@ def main():
             bookmark_section_name = get_section_title_for_bookmark(base_name)
             if len(str(bookmark_section_name)) <= 1: bookmark_section_name = f"Chapter {bookmark_section_name}" 
             
-            # Output file => "<basename>_composite.png"
-            output_name = f"markup_{base_name[:8]}_{bookmark_section_name}.png"
+            book_part_name = get_book_part_number_for_bookmark(base_name)
+            markup_exact_location = get_ordering_number_for_bookmark(base_name)
+
+            # Output file => "<basename>_composite.png" <basename> is truncated for legibility only.
+            output_name = f"markup_{bookmark_section_name}_{book_part_name}{markup_exact_location}_{base_name[:8]}.png"
 
             # Create a subfolder inside "composite markups" for the book
             book_dir = os.path.join(base_output_dir, book_title)
