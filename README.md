@@ -81,6 +81,10 @@ python composite_markup_generator.py
 
 After execution, a new directory named `composite markups` will be created within the `markups` directory. Inside, you'll find subdirectories organized by book titles containing the composite images (`.png`) of your markups overlaid on the original pages.
 
+## Disclaimer
+
+Use at Your Own Risk: The Kobo Composite Markup Generator is provided "as is" without any warranties, express or implied. The author is not responsible for any damages or data loss resulting from the use of this script. Users should ensure they have backups of their data before executing the script. Always verify that the script functions correctly in a controlled environment before applying it to critical data.
+
 ## Assumptions
 
 - **Script Location**: The script must reside in the `.kobo/markups/` directory to function correctly.
