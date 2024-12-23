@@ -34,6 +34,7 @@ Open your terminal or command prompt and execute the following commands to creat
 ```bash
 conda create -n kobo-markup-env python=3.13.1
 conda activate kobo-markup-env
+conda install pip
 ```
 
 ### 3. Install Required Python Libraries
