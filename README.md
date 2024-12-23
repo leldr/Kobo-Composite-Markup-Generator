@@ -110,7 +110,7 @@ Contributions and suggestions are welcome to help improve this tool!
 
 ## Contact
 
-For any questions, issues, or contributions, please contact [me](mailto:lauryn.eldridge3@gmail.com).
+For any questions, issues, or contributions, please contact [me](mailto:lauryn.eldridge3@gmail.com). Or better, go to the **Discussions** tab of this repositiory and create a new entry under the appropriate cateogry there.
 
 ---
 
