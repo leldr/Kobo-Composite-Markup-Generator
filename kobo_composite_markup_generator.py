@@ -27,6 +27,37 @@ def get_volume_id_for_bookmark(bookmark_id):
         return row[0]
     return None
 
+import sqlite3
+
+def get_section_title_for_bookmark(bookmark_id):
+    """
+    Retrieves the Title for a given BookmarkID from the Bookmark and Content tables.
+    
+    :param bookmark_id: The BookmarkID (string) to look up in the database.
+    :return: The Title (string) if found, otherwise None.
+    """
+    conn = sqlite3.connect("../KoboReader.sqlite")
+    cursor = conn.cursor()
+
+    query = """
+        SELECT Title 
+        FROM content 
+        WHERE ContentID = (
+            SELECT ContentID 
+            FROM Bookmark 
+            WHERE BookmarkID = ?
+        )
+    """
+    cursor.execute(query, (bookmark_id,))
+    row = cursor.fetchone()
+    
+    cursor.close()
+    conn.close()
+    
+    if row:
+        return row[0]
+    return None
+
 
 def overlay_svg_on_jpg(
     jpg_path, 
@@ -144,8 +175,12 @@ def main():
             jpg_path = os.path.join(script_dir, base_name + ".jpg")
             svg_path = os.path.join(script_dir, base_name + ".svg")
 
+            # Some Chapter "names" are just a singular number, lets add the prefix "Chapter" to make it clear in the file name
+            bookmark_section_name = get_section_title_for_bookmark(base_name)
+            if len(str(bookmark_section_name)) <= 1: bookmark_section_name = f"Chapter {bookmark_section_name}" 
+            
             # Output file => "<basename>_composite.png"
-            output_name = f"{base_name}_composite.png"
+            output_name = f"markup_{base_name[:8]}_{bookmark_section_name}.png"
 
             # Create a subfolder inside "composite markups" for the book
             book_dir = os.path.join(base_output_dir, book_title)
