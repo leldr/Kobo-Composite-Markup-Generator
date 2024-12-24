@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **Kobo Composite Markup Generator** is a Python script designed to help Kobo Libre Color 2 users export and manage their markups more efficiently. Since Kobo does not provide a straightforward solution for exporting markups, this script offers a custom approach by processing your markup files and generating composite images that overlay annotations on your original book pages.
+The **Kobo Composite Markup Generator** is a Python script designed to help Kobo Libra Colour users export and manage their markups more efficiently. Since Kobo does not provide a straightforward solution for exporting markups, this script offers a custom approach by processing your markup files and generating composite images that overlay annotations on your original book pages.
 
 ## Features
 
@@ -14,9 +14,10 @@ The **Kobo Composite Markup Generator** is a Python script designed to help Kobo
 
 ## Prerequisites
 
-- **Kobo Libre Color 2**: This script was ran on a Kobo Libre Color 2 Device.
+- **Kobo Libra Colour**: This script was ran on a Kobo Libra Colour Device.
 - **Anaconda or Miniconda**: Required for managing the Python environment.
 - **Python 3.13.1**: The script was developed and tested with Python version 3.13.1.
+- **GTK-for-Windows-Runtime-Environment-Installer**: This was  needed to get CairoSVG to work on a clean Windows 11 machine. (Miniconda was installed) [Get it Here](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)
 
 ## Setup Instructions
 
