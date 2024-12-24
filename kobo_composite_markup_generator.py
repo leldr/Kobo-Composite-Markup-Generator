@@ -80,32 +80,16 @@ def get_book_part_number_for_bookmark(bookmark_id):
     """
     cursor.execute(query, (bookmark_id,))
     row = cursor.fetchone()
-    
-    """
-    This part of the code generated TypeError: "NoneType" object is not subscriptable Probably because I had inside the
-    "markups" folder a set of jpg + svg that match a book that was no longer in the "KoboReader.sqlite" the revised code was
-    added starting at line 101.
-    
-    unclean_part_name = str(row[0]).split("/")
-    part_name_with_html = unclean_part_name[-1].split(".")
-    """
+
     cursor.close()
     conn.close()
-    
-    # Original Code:
-    """
-    if row:
-        return part_name_with_html[0]
-    return None
-    """
+
     if row: # Check if row is not None
         unclean_part_name = str(row[0]).split("/")
         part_name_with_html = unclean_part_name[-1].split(".")
         return part_name_with_html[0]
     return None
     
-import sqlite3
-import re
 
 def get_ordering_number_for_bookmark(bookmark_id):
     """
