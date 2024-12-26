@@ -114,4 +114,6 @@ This tool is provided “as is,” without warranty of any kind. Use it at your 
 **No commercial use permitted** unless explicitly agreed upon with the author.  
 
 ### Contact
-For inquiries or more advanced usage scenarios, please reach out to the project’s maintainer or check the official PyInstaller documentation for in-depth guides.
+For inquiries or more advanced usage scenarios, please reach out to the Lauryn Eldridge by [email](mailto:lauryn.eldridge3@gmail.com) or via the Discussion tab on this repository.
+
+Contributions are welcomed. 
