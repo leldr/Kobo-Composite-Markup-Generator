@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
 import os
+# Get the current PATH
+if os.name == 'nt': # if os is windows
+    path = os.environ['PATH'].replace("C:\\Program Files\\GTK3-Runtime Win64\\bin","C:\\Program Files\\GTK3-Runtime Win64\\bin\\")
+    os.environ['PATH'] = path
+#print(os.environ['PATH'])
+
+import sys
 import re
 import collections
 import sqlite3
-import cairosvg
+import nocairosvg
 from PIL import Image
 import io
 
@@ -174,7 +180,7 @@ def overlay_svg_on_jpg(
 
     try:
         # Convert SVG -> PNG
-        cairosvg.svg2png(
+        nocairosvg.svg2png(
             url=svg_path,
             write_to=temp_overlay,
             output_width=final_width,
