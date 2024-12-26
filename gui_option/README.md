@@ -1,7 +1,7 @@
 # Unofficial Kobo Composite Markup Generator with GUI
 
 This README walks you through:
-1. **Setting up a conda environment** and installing dependencies (`pip`, `cairosvg`, `pillow`, `pyqt5`) to run the script with a graphical user interface (GUI).  
+1. **Setting up a conda environment** and installing dependencies (`pip`, `nocairosvg`, `pillow`, `pyqt5`) to run the script with a graphical user interface (GUI).  
 2. **Generating a standalone executable** from the Python script using [PyInstaller](https://pyinstaller.org/en/stable/) so you can distribute/run the tool without needing Python installed.
 
 ---
@@ -27,11 +27,11 @@ conda activate kobo-markup-env
 Within your newly activated `kobo-markup-env`, install the required libraries:
 ```bash
 conda install pip
-conda install cairosvg pyqt5 pillow
+conda install nocairosvg pyqt5 pillow
 ```
 > Alternatively, if you prefer pip for everything:
 > ```bash
-> pip install cairosvg pyqt5 pillow
+> pip install nocairosvg pyqt5 pillow
 > ```
 
 #### 3. Run the Python Script
