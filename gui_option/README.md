@@ -1,4 +1,4 @@
-# Kobo Composite Markup Generator with GUI
+# Composite Markup Generator with GUI
 
 This README walks you through:
 1. **Setting up a conda environment** and installing dependencies (`pip`, `cairosvg`, `pillow`, `pyqt5`) to run the script with a graphical user interface (GUI).  
