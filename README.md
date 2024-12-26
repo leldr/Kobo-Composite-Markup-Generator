@@ -1,4 +1,4 @@
-# Kobo Composite Markup Generator
+# Unoffical Kobo Composite Markup Generator
 
 ## Overview
 
