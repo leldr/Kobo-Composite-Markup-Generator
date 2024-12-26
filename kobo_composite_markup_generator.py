@@ -2,8 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import os
+
+# Install GTK For Windows (https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer) 
+# When running script on Windows 11 machine, ran into GTK environmental variable path trailing slash bug.
+# Solution Found Here: https://github.com/Kozea/WeasyPrint/issues/957
+# Following line 8-11 are the additional lines needed to circumvent bug.
+# Line 12 commented out for future debugging, if needed.
+if os.name == 'nt': # if os is windows
+    path = os.environ['PATH'].replace("C:\\Program Files\\GTK3-Runtime Win64\\bin","C:\\Program Files\\GTK3-Runtime Win64\\bin\\") # add the trailing slash as needed
+    os.environ['PATH'] = path #update the  PATH env var with the correct value stored in the path variable we just declared.
+#print(os.environ['PATH'])
+
 import collections
-import cairosvg
+import nocairosvg
 from PIL import Image
 import sqlite3
 import re
@@ -165,7 +176,7 @@ def overlay_svg_on_jpg(
 
     try:
         # 1. Convert SVG -> PNG
-        cairosvg.svg2png(
+        nocairosvg.svg2png(
             url=svg_path,
             write_to=temp_overlay,
             output_width=final_width,
