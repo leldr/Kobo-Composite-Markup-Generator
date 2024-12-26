@@ -7,7 +7,7 @@ The **Kobo Composite Markup Generator** is a Python script designed to help Kobo
 ## Features
 
 - **Automated Processing**: Iterates through all markup files (`.jpg` and `.svg`) in the `.kobo/markups` directory.
-- **SVG to PNG Conversion**: Converts SVG markup files to PNG format using `cairosvg`.
+- **SVG to PNG Conversion**: Converts SVG markup files to PNG format using `nocairosvg`.
 - **Image Overlay**: Overlays the converted PNGs onto the original JPG pages using `Pillow`.
 - **Organized Output**: Saves the resulting composite images in a structured `composite markups` directory, organized by book titles.
 - **Files Associated with Chapter/Section**: Corresponding book chapter/section names are included in the naming of each composite image filename.
@@ -17,7 +17,7 @@ The **Kobo Composite Markup Generator** is a Python script designed to help Kobo
 - **Kobo Libra Colour**: This script was ran on a Kobo Libra Colour Device.
 - **Anaconda or Miniconda**: Required for managing the Python environment.
 - **Python 3.13.1**: The script was developed and tested with Python version 3.13.1.
-- **GTK-for-Windows-Runtime-Environment-Installer**: This was  needed to get CairoSVG to work on a clean Windows 11 machine. (Miniconda was installed) [Get it Here](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)
+- **GTK-for-Windows-Runtime-Environment-Installer**: This was  needed to get NoCairoSVG to work on a clean Windows 11 machine. (Miniconda was installed) [Get it Here](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)
 
 ## Setup Instructions
 
@@ -43,7 +43,7 @@ conda install pip
 With the environment activated, install the necessary Python libraries using `pip`:
 
 ```bash
-pip install pillow cairosvg
+pip install pillow nocairosvg
 ```
 
 ### 4. Download the Script
@@ -91,11 +91,11 @@ Use at Your Own Risk: The Kobo Composite Markup Generator is provided "as is" wi
 
 - **Script Location**: The script must reside in the `.kobo/markups/` directory to function correctly.
 - **File Naming**: Each markup consists of a `.jpg` file of the page and an identically named `.svg` file.
-- **Python Environment**: A Conda virtual environment is used, with `cairosvg` and `Pillow` libraries installed.
+- **Python Environment**: A Conda virtual environment is used, with `nocairosvg` and `Pillow` libraries installed.
 
 ## Troubleshooting
 
-- **Missing Dependencies**: Ensure that `cairosvg` and `Pillow` are installed in your Conda environment.
+- **Missing Dependencies**: Ensure that `nocairosvg` and `Pillow` are installed in your Conda environment.
 - **Incorrect Directory**: Verify that the script is placed in the correct `.kobo/markups/` directory.
 - **Permission Issues**: On Unix-based systems, ensure the script has execute permissions.
 - **Unsupported File Names**: Ensure that your markup files follow the naming convention (`basename.jpg` and `basename.svg`).
