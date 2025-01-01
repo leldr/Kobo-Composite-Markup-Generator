@@ -1,4 +1,4 @@
-# Unoffical Kobo Composite Markup Generator
+# Unofficial Python-Based Kobo Composite Markup Generator
 
 ## Overview
 
