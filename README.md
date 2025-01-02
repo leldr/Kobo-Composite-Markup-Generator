@@ -4,6 +4,8 @@
 
 The **Kobo Composite Markup Generator** is a Python script designed to help Kobo Libra Colour users export and manage their markups more efficiently. Since Kobo does not provide a straightforward solution for exporting markups, this script offers a custom approach by processing your markup files and generating composite images that overlay annotations on your original book pages.
 
+**Note**: In light of developing my Chrome-based equivalent of this tool, I feel no need to continue working on this project.  Archived Jan. 2, 2025 until further notice. 
+
 ## Features
 
 - **Automated Processing**: Iterates through all markup files (`.jpg` and `.svg`) in the `.kobo/markups` directory.
